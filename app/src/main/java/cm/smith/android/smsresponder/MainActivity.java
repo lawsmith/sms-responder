@@ -5,9 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import cm.smith.android.smsresponder.commands.ADDcommand;
-import cm.smith.android.smsresponder.messaging.ToastMessage;
+import cm.smith.android.smsresponder.command.ADDcommand;
+import cm.smith.android.smsresponder.message.ToastMessage;
+import cm.smith.android.smsresponder.model.User;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,9 +36,18 @@ public class MainActivity extends AppCompatActivity {
         // Testing Purposes
         input = (EditText)findViewById(R.id.editText);
         button = (Button)findViewById(R.id.button);
+
+
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(this).build();
+        Realm realm = Realm.getInstance(realmConfig);
+        RealmQuery<User> query = realm.where(User.class);
+        RealmResults<User> result = query.findAll();
+        Toast.makeText(this, result.toString(), Toast.LENGTH_SHORT).show();
+
     }
 
     public void onClickButton(View v) {
-        boolean output = manager.checkCommand("6045555555", input.getText().toString());
+        boolean output = manager.checkCommand("1234561234", input.getText().toString());
     }
+
 }

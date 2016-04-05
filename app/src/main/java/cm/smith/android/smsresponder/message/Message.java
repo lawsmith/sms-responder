@@ -1,4 +1,4 @@
-package cm.smith.android.smsresponder.messaging;
+package cm.smith.android.smsresponder.message;
 
 import android.content.Context;
 
