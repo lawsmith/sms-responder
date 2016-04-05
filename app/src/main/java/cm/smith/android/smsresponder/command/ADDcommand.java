@@ -35,13 +35,15 @@ public class ADDcommand extends Command {
         final String phoneNum = arr[0];
         final String name = arr[1];
 
+        final User tempUser = new User();
+        tempUser.setName(name);
+        tempUser.setPhone(phoneNum);
+        tempUser.setUserRole(User.Role.MEMBER.getValue());
+
         getDatabase().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                User user = realm.createObject(User.class);
-                user.setName(name);
-                user.setPhone(phoneNum);
-                user.setUserRole(User.Role.MEMBER.getValue());
+                realm.copyToRealmOrUpdate(tempUser);
             }
         });
 
