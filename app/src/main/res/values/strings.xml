@@ -5,6 +5,7 @@
       - Generic - Error Messages
       -===================-->
     <string name="error_configuration">No registered commands</string>
+    <string name="error_input_invalid">Invalid input</string>
     <string name="error_command_invalid">Invalid command</string>
     <string name="error_other">Something went wrong, check logs</string>
 

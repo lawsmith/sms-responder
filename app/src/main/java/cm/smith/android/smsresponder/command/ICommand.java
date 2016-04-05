@@ -5,7 +5,6 @@ package cm.smith.android.smsresponder.command;
  */
 public interface ICommand {
 
-    boolean parseInput(String senderPhone, String input);
     boolean execute(String senderPhone, String args);
 
 }

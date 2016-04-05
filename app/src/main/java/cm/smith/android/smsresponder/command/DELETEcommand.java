@@ -37,6 +37,12 @@ public class DELETEcommand extends Command {
                 .equalTo("phone", phoneNum)
                 .findFirst();
 
+        // If user doesn't exist display error
+        if (user == null) {
+            CmdManager.message.sendMessage("User: " + phoneNum + " not found.");
+            return false;
+        }
+
         getDatabase().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
