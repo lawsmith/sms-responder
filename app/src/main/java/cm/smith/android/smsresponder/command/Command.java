@@ -38,9 +38,9 @@ public abstract class Command implements ICommand {
             String arguments = arr[1];
 
             if (command.equals(getCommand())) {
-                return this.execute(senderPhone, arguments);
+                this.execute(senderPhone, arguments);
+                return true;
             } else {
-                CmdManager.message.sendMessage(R.string.error_command_invalid);
                 return false;
             }
         } else {

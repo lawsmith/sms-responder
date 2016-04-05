@@ -22,21 +22,27 @@ public class CmdManager {
         allCommands.add(cmd);
     }
     
-    public boolean checkCommand(String senderPhone, String input) {
+    public void checkCommand(String senderPhone, String input) {
         // ERROR: no commands registered
         if (allCommands.size() == 0) {
             CmdManager.message.sendMessage(R.string.error_configuration);
-            return false;
+            return;
         }
 
         // ELSE, run through registered commands
+        boolean foundCmd = false;
         for (Command cmd :
                 allCommands) {
-            return cmd.parseInput(senderPhone, input);
+            if (!foundCmd) {
+                foundCmd = cmd.parseInput(senderPhone, input);
+            } else {
+                break;
+            }
         }
 
-        CmdManager.message.sendMessage(R.string.error_other);
-        return true;
+        if (!foundCmd) {
+            CmdManager.message.sendMessage(R.string.error_command_invalid);
+        }
     }
 
 }

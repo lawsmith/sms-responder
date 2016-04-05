@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import cm.smith.android.smsresponder.command.ADDcommand;
+import cm.smith.android.smsresponder.command.DELETEcommand;
 import cm.smith.android.smsresponder.message.ToastMessage;
 import cm.smith.android.smsresponder.model.User;
 import io.realm.Realm;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Register the commands we want to use
         manager.registerCommand(new ADDcommand());
+        manager.registerCommand(new DELETEcommand());
 
         // Testing Purposes
         input = (EditText)findViewById(R.id.editText);
