@@ -14,17 +14,28 @@ public class User extends RealmObject {
         an integer to get around that :(
      */
     public enum Role {
-        MEMBER(100),
-        ADMIN(500);
+        MEMBER("MEMBER"),
+        ADMIN("ADMIN");
 
-        private final int value;
+        private final String value;
 
-        Role(int role) {
+        Role(String role) {
             this.value = role;
         }
 
-        public int getValue() {
+        public String getValue() {
             return value;
+        }
+
+        public static Role fromString(String text) throws IllegalArgumentException {
+            if (text != null) {
+                for (Role r : Role.values()) {
+                    if (text.equalsIgnoreCase(r.value)) {
+                        return r;
+                    }
+                }
+            }
+            throw new IllegalArgumentException("No role with text " + text + " found");
         }
     }
 
@@ -33,7 +44,7 @@ public class User extends RealmObject {
     @PrimaryKey
     private String phone;
     @Required
-    private Integer userRole;
+    private String userRole;
 
     public void setName(String name) {
         this.name = name;
@@ -45,9 +56,9 @@ public class User extends RealmObject {
     }
     public String getPhone() { return this.phone; }
 
-    public void setUserRole(Integer role) {
+    public void setUserRole(String role) {
         this.userRole = role;
     }
-    public Integer getUserRole() { return this.userRole; }
+    public String getUserRole() { return this.userRole; }
 
 }

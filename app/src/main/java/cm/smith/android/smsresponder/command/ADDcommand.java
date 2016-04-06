@@ -26,19 +26,29 @@ public class ADDcommand extends Command {
         }
 
         // Validate that the input has at least the right number of arguments
-        String arr[] = arguments.split(" ", 2);
-        if (arr.length != 2) {
-            CmdManager.message.sendMessage("Invalid Command: '" + getCommand() + "' with Args: '" + arguments + "'");
+        String arr[] = arguments.split(" ");
+        if (arr.length != 2 && arr.length != 3) {
+            CmdManager.message.sendMessage("usage: " + getCommand() + " 1234567890 name [role]");
             return false;
         }
 
-        final String phoneNum = arr[0];
-        final String name = arr[1];
+        String phoneNum = arr[0];
+        String name = arr[1];
+        User.Role role = User.Role.MEMBER;
+
+        // Check if the input wants to set the role of the user
+        if (arr.length == 3) {
+            try {
+                role = User.Role.fromString(arr[2]);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
 
         final User tempUser = new User();
         tempUser.setName(name);
         tempUser.setPhone(phoneNum);
-        tempUser.setUserRole(User.Role.MEMBER.getValue());
+        tempUser.setUserRole(role.getValue());
 
         getDatabase().executeTransaction(new Realm.Transaction() {
             @Override
@@ -47,7 +57,7 @@ public class ADDcommand extends Command {
             }
         });
 
-        CmdManager.message.sendMessage("(" + getCommand() + ") " + name + " added successfully");
+        CmdManager.message.sendMessage(getCommand() + ": " + name + " added successfully");
         return true;
     }
 
