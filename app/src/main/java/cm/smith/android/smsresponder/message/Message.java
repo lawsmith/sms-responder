@@ -17,8 +17,8 @@ public abstract class Message {
         return this.ctx;
     }
 
-    public abstract void sendMessage(int id);
+    public abstract void sendMessage(String phoneNum, int id);
 
-    public abstract void sendMessage(String message);
+    public abstract void sendMessage(String phoneNum, String message);
 
 }

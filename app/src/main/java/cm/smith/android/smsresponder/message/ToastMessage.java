@@ -13,13 +13,13 @@ public class ToastMessage extends Message {
     }
 
     @Override
-    public void sendMessage(int id) {
+    public void sendMessage(String phoneNum, int id) {
         String message = getContext().getString(id);
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(String phoneNum, String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 

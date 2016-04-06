@@ -25,14 +25,14 @@ public class CmdManager {
     public boolean checkCommand(String senderPhone, String input) {
         // ERROR: no commands registered
         if (allCommands.size() == 0) {
-            CmdManager.message.sendMessage(R.string.error_configuration);
+            CmdManager.message.sendMessage(senderPhone, R.string.error_configuration);
             return false;
         }
 
         // Parse the input into Command and Arguments
         String arr[] = input.split(" ", 2);
         if (arr.length != 2) {
-            CmdManager.message.sendMessage(R.string.error_input_invalid);
+            CmdManager.message.sendMessage(senderPhone, R.string.error_input_invalid);
             return false;
         }
 
@@ -51,7 +51,7 @@ public class CmdManager {
 
         // Oh darn, no command was found
         if (foundCmd == null) {
-            CmdManager.message.sendMessage(R.string.error_command_invalid);
+            CmdManager.message.sendMessage(senderPhone, R.string.error_command_invalid);
             return false;
         }
 

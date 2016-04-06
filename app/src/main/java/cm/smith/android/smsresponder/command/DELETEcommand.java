@@ -21,14 +21,14 @@ public class DELETEcommand extends Command {
                 .equalTo("phone", senderPhone)
                 .findFirst();
         if (sender == null) {
-            CmdManager.message.sendMessage("Sorry, you don't have sufficient permissions.");
+            CmdManager.message.sendMessage(senderPhone, "Sorry, you don't have sufficient permissions.");
             return false;
         }
 
         // Validate that the input has at least the right number of arguments
         String arr[] = arguments.split(" ");
         if (arr.length != 1) {
-            CmdManager.message.sendMessage("usage: " + getCommand() + " 1234567890");
+            CmdManager.message.sendMessage(senderPhone, "usage: " + getCommand() + " 1234567890");
             return false;
         }
 
@@ -39,7 +39,7 @@ public class DELETEcommand extends Command {
 
         // If user doesn't exist display error
         if (user == null) {
-            CmdManager.message.sendMessage("User: " + phoneNum + " not found.");
+            CmdManager.message.sendMessage(senderPhone, "User: " + phoneNum + " not found.");
             return false;
         }
 
@@ -50,7 +50,7 @@ public class DELETEcommand extends Command {
             }
         });
 
-        CmdManager.message.sendMessage("(" + getCommand() + ") " + phoneNum + " removed successfully");
+        CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") " + phoneNum + " removed successfully");
         return true;
     }
 

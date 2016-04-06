@@ -1,6 +1,8 @@
 package cm.smith.android.smsresponder;
 
+import android.Manifest;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +11,7 @@ import android.widget.Toast;
 
 import cm.smith.android.smsresponder.command.ADDcommand;
 import cm.smith.android.smsresponder.command.DELETEcommand;
-import cm.smith.android.smsresponder.message.ToastMessage;
+import cm.smith.android.smsresponder.message.SMSMessenger;
 import cm.smith.android.smsresponder.model.User;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Setup Command Manager and the output stream to use
-        manager = new CmdManager(new ToastMessage(this));
+        manager = new CmdManager(new SMSMessenger(this));
 
         // Register the commands we want to use
         manager.registerCommand(new ADDcommand());
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         // Testing Purposes
         input = (EditText)findViewById(R.id.editText);
         button = (Button)findViewById(R.id.button);
+
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
 
 
         RealmConfiguration realmConfig = new RealmConfiguration.Builder(this).build();

@@ -21,14 +21,14 @@ public class ADDcommand extends Command {
                 .equalTo("phone", senderPhone)
                 .findFirst();
         if (sender == null) {
-            CmdManager.message.sendMessage("Sorry, you don't have sufficient permissions.");
+            CmdManager.message.sendMessage(senderPhone, "Sorry, you don't have sufficient permissions.");
             return false;
         }
 
         // Validate that the input has at least the right number of arguments
         String arr[] = arguments.split(" ");
         if (arr.length != 2 && arr.length != 3) {
-            CmdManager.message.sendMessage("usage: " + getCommand() + " 1234567890 name [role]");
+            CmdManager.message.sendMessage(senderPhone, "usage: " + getCommand() + " 1234567890 name [role]");
             return false;
         }
 
@@ -57,7 +57,7 @@ public class ADDcommand extends Command {
             }
         });
 
-        CmdManager.message.sendMessage(getCommand() + ": " + name + " added successfully");
+        CmdManager.message.sendMessage(senderPhone, getCommand() + ": " + name + " added successfully");
         return true;
     }
 
