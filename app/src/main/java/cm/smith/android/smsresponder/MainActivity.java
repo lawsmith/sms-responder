@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickButton(View v) {
-        boolean output = manager.checkCommand("1234561234", input.getText().toString());
+        boolean output = manager.checkCommand("5555555555", input.getText().toString());
     }
 
 }

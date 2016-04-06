@@ -26,9 +26,9 @@ public class DELETEcommand extends Command {
         }
 
         // Validate that the input has at least the right number of arguments
-        String arr[] = arguments.split(" ", 2);
+        String arr[] = arguments.split(" ");
         if (arr.length != 1) {
-            CmdManager.message.sendMessage("Invalid Command: '" + getCommand() + "' with Args: '" + arguments + "'");
+            CmdManager.message.sendMessage("usage: " + getCommand() + " 1234567890");
             return false;
         }
 
