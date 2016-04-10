@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import cm.smith.android.smsresponder.command.Command;
 import cm.smith.android.smsresponder.message.Message;
+import cm.smith.android.smsresponder.model.User;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
  * Created by anthony on 2016-03-30.
@@ -12,10 +15,14 @@ public class CmdManager {
 
     public static Message message;
     ArrayList<Command> allCommands;
+    private Realm database;
 
     public CmdManager(Message msg) {
         CmdManager.message = msg;
         allCommands = new ArrayList<>();
+
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(CmdManager.message.getContext()).build();
+        database = Realm.getInstance(realmConfig);
     }
 
     public void registerCommand(Command cmd) {
@@ -23,6 +30,16 @@ public class CmdManager {
     }
     
     public boolean checkCommand(String senderPhone, String input) {
+        // Check to if a registered user exists
+        User sender = database.where(User.class)
+                .equalTo("phone", senderPhone)
+                .findFirst();
+
+        if (sender == null) {
+            // TODO: Log an invalid attempt
+            return false;
+        }
+
         // ERROR: no commands registered
         if (allCommands.size() == 0) {
             CmdManager.message.sendMessage(senderPhone, R.string.error_configuration);
