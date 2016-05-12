@@ -50,7 +50,7 @@ public class SmsListener extends BroadcastReceiver {
                 }
 
                 // Setup Command Manager and the output stream to use
-                CmdManager manager = new CmdManager(new SMSMessenger(context));
+                CmdManager manager = new CmdManager(new SMSMessenger(context), false);
 
                 // Register the commands we want to use
                 manager.registerCommand(new ADDcommand());

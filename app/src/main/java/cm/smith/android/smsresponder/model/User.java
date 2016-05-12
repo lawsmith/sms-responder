@@ -9,36 +9,6 @@ import io.realm.annotations.Required;
  */
 public class User extends RealmObject {
 
-    /*
-        Sadly RealmDB doesn't support saving ENUM values, so I'm storing roles as
-        an integer to get around that :(
-     */
-    public enum Role {
-        MEMBER("MEMBER"),
-        ADMIN("ADMIN");
-
-        private final String value;
-
-        Role(String role) {
-            this.value = role;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public static Role fromString(String text) throws IllegalArgumentException {
-            if (text != null) {
-                for (Role r : Role.values()) {
-                    if (text.equalsIgnoreCase(r.value)) {
-                        return r;
-                    }
-                }
-            }
-            throw new IllegalArgumentException("No role with text " + text + " found");
-        }
-    }
-
     @Required
     private String name;
     @PrimaryKey

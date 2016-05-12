@@ -1,6 +1,7 @@
 package cm.smith.android.smsresponder.command;
 
 import cm.smith.android.smsresponder.CmdManager;
+import cm.smith.android.smsresponder.model.Role;
 import cm.smith.android.smsresponder.model.User;
 import io.realm.Realm;
 
@@ -10,21 +11,11 @@ import io.realm.Realm;
 public class DELETEcommand extends Command {
 
     public DELETEcommand() {
-        super("DELETE");
+        super("DELETE", Role.ADMIN);
     }
 
     @Override
     public boolean execute(final String senderPhone, final String arguments) {
-        // Make sure the sender is authorized to run this command
-        User sender = getDatabase().where(User.class)
-                .equalTo("userRole", User.Role.ADMIN.getValue())
-                .equalTo("phone", senderPhone)
-                .findFirst();
-        if (sender == null) {
-            CmdManager.message.sendMessage(senderPhone, "Sorry, you don't have sufficient permissions.");
-            return false;
-        }
-
         // Validate that the input has at least the right number of arguments
         String arr[] = arguments.split(" ");
         if (arr.length != 1) {

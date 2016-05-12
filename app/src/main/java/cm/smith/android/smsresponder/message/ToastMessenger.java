@@ -6,9 +6,9 @@ import android.widget.Toast;
 /**
  * Created by anthony on 2016-03-30.
  */
-public class ToastMessage extends Message {
+public class ToastMessenger extends Message {
 
-    public ToastMessage(Context ctx) {
+    public ToastMessenger(Context ctx) {
         super(ctx);
     }
 
