@@ -18,7 +18,7 @@ public class DELETEcommand extends Command {
     public boolean execute(final String senderPhone, final String arguments) {
         // Validate that the input has at least the right number of arguments
         String arr[] = arguments.split(" ");
-        if (arr.length != 1) {
+        if (arguments.isEmpty() || arr.length != 1) {
             CmdManager.message.sendMessage(senderPhone, "usage: " + getCommand() + " 1234567890");
             return false;
         }
@@ -41,7 +41,7 @@ public class DELETEcommand extends Command {
             }
         });
 
-        CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") " + phoneNum + " removed successfully");
+        CmdManager.message.sendMessage(senderPhone, getCommand() + ": " + phoneNum + " removed successfully");
         return true;
     }
 

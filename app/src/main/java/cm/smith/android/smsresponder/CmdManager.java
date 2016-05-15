@@ -62,12 +62,15 @@ public class CmdManager {
 
         // Parse the input into Command and Arguments
         String arr[] = inputCommand.split(" ", 2);
-        if (arr.length != 2) {
-            CmdManager.message.sendMessage(inputPhone, R.string.error_input_invalid);
-            return false;
+        String commandString = "";
+        String argumentString = "";
+
+        if (arr.length >= 1) {
+            commandString = arr[0];
         }
-        String commandString = arr[0];
-        String argumentString = arr[1];
+        if (arr.length >= 2) {
+            argumentString = arr[1];
+        }
 
         // We're clear to start checking input command against registered ones
         Command foundCmd = findCommand(commandString);

@@ -2,6 +2,7 @@ package cm.smith.android.smsresponder.model;
 
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -14,6 +15,7 @@ public class Alert extends RealmObject {
     private Integer id;
     private Date startDate;
     private Boolean resolved;
+    private RealmList<AlertResponse> alertResponses;
 
     public void setId(Integer newId) {
         this.id = newId;
@@ -29,5 +31,10 @@ public class Alert extends RealmObject {
         this.resolved = resolved;
     }
     public Boolean getResolved() { return this.resolved; }
+
+    public void addResponse(AlertResponse response) {
+        this.alertResponses.add(response);
+    }
+    public RealmList<AlertResponse> getResponses() { return this.alertResponses; }
 
 }

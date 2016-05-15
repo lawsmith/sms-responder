@@ -4,6 +4,7 @@ import cm.smith.android.smsresponder.CmdManager;
 import cm.smith.android.smsresponder.model.Role;
 import cm.smith.android.smsresponder.model.User;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by anthony on 2016-03-30.
@@ -18,7 +19,7 @@ public class ADDcommand extends Command {
     public boolean execute(final String senderPhone, final String arguments) {
         // Validate that the input has at least the right number of arguments
         String arr[] = arguments.split(" ");
-        if (arr.length != 2 && arr.length != 3) {
+        if (arguments.isEmpty() || (arr.length != 2 && arr.length != 3)) {
             CmdManager.message.sendMessage(senderPhone, "usage: " + getCommand() + " 1234567890 name [role]");
             return false;
         }
@@ -26,6 +27,12 @@ public class ADDcommand extends Command {
         String phoneNum = arr[0];
         String name = arr[1];
         Role role = Role.MEMBER;
+
+        // Make sure that the phone number isn't already in use
+        if (User.checkIfExists(getDatabase(), phoneNum)) {
+            CmdManager.message.sendMessage(senderPhone, getCommand() + ": '" + phoneNum + "' is already in use");
+            return false;
+        }
 
         // Check if the input wants to set the role of the user
         if (arr.length == 3) {
@@ -36,7 +43,10 @@ public class ADDcommand extends Command {
             }
         }
 
+        final RealmResults<User> allUsers = getDatabase().where(User.class)
+                .findAll();
         final User tempUser = new User();
+        tempUser.setId(allUsers.size() + 1);
         tempUser.setName(name);
         tempUser.setPhone(phoneNum);
         tempUser.setUserRole(role.getValue());
@@ -48,7 +58,7 @@ public class ADDcommand extends Command {
             }
         });
 
-        CmdManager.message.sendMessage(senderPhone, getCommand() + ": " + name + " added successfully");
+        CmdManager.message.sendMessage(senderPhone, getCommand() + ": " + name + " added successfully as a " + tempUser.getUserRole());
         return true;
     }
 
