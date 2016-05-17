@@ -30,7 +30,7 @@ public class DELETEcommand extends Command {
 
         // If user doesn't exist display error
         if (user == null) {
-            CmdManager.message.sendMessage(senderPhone, "User: " + phoneNum + " not found.");
+            CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") User: " + phoneNum + " not found.");
             return false;
         }
 
@@ -41,7 +41,7 @@ public class DELETEcommand extends Command {
             }
         });
 
-        CmdManager.message.sendMessage(senderPhone, getCommand() + ": " + phoneNum + " removed successfully");
+        CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") " + phoneNum + " removed successfully");
         return true;
     }
 

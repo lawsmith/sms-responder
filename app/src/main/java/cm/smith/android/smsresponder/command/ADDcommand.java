@@ -30,7 +30,7 @@ public class ADDcommand extends Command {
 
         // Make sure that the phone number isn't already in use
         if (User.checkIfExists(getDatabase(), phoneNum)) {
-            CmdManager.message.sendMessage(senderPhone, getCommand() + ": '" + phoneNum + "' is already in use");
+            CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") '" + phoneNum + "' is already in use");
             return false;
         }
 
@@ -58,7 +58,7 @@ public class ADDcommand extends Command {
             }
         });
 
-        CmdManager.message.sendMessage(senderPhone, getCommand() + ": " + name + " added successfully as a " + tempUser.getUserRole());
+        CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") " + name + " added successfully as a " + tempUser.getUserRole());
         return true;
     }
 

@@ -16,6 +16,7 @@ import cm.smith.android.smsresponder.command.ADDcommand;
 import cm.smith.android.smsresponder.command.ALERTcommand;
 import cm.smith.android.smsresponder.command.DELETEcommand;
 import cm.smith.android.smsresponder.command.SAFEcommand;
+import cm.smith.android.smsresponder.command.TESTcommand;
 import cm.smith.android.smsresponder.message.ToastMessenger;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         manager.registerCommand(new DELETEcommand());
         manager.registerCommand(new ALERTcommand());
         manager.registerCommand(new SAFEcommand());
+        manager.registerCommand(new TESTcommand());
 
         // Testing Purposes
         input = (EditText)findViewById(R.id.editText);

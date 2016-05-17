@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
 import cm.smith.android.smsresponder.command.ADDcommand;
+import cm.smith.android.smsresponder.command.ALERTcommand;
 import cm.smith.android.smsresponder.command.DELETEcommand;
+import cm.smith.android.smsresponder.command.SAFEcommand;
+import cm.smith.android.smsresponder.command.TESTcommand;
 import cm.smith.android.smsresponder.message.SMSMessenger;
 
 /**
@@ -26,7 +28,8 @@ public class SmsListener extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        boolean isRunning = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(CmdManager.KEY_PREF_RUNNING, false);
+        SharedPreferences sharedPref = context.getSharedPreferences(CmdManager.KEY_PREF_FILE, Context.MODE_PRIVATE);
+        boolean isRunning = sharedPref.getBoolean(CmdManager.KEY_PREF_RUNNING, false);
 
         if(isRunning && intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
             Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
@@ -58,6 +61,9 @@ public class SmsListener extends BroadcastReceiver {
                 // Register the commands we want to use
                 manager.registerCommand(new ADDcommand());
                 manager.registerCommand(new DELETEcommand());
+                manager.registerCommand(new ALERTcommand());
+                manager.registerCommand(new SAFEcommand());
+                manager.registerCommand(new TESTcommand());
 
                 manager.checkCommand(msg_from, msg_body);
             }

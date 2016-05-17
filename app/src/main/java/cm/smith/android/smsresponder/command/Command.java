@@ -37,8 +37,8 @@ public abstract class Command implements ICommand {
      * Returns the minimum permission role required for the command
      * @return minimum permission role as a string
      */
-    public String getPermissionLevel() {
-        return this.permissionLevel.getValue();
+    public Role getPermissionLevel() {
+        return this.permissionLevel;
     }
 
     /**

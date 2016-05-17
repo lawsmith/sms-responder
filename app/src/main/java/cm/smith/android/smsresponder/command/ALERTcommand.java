@@ -52,16 +52,16 @@ public class ALERTcommand extends Command {
                     }
                 });
 
-                CmdManager.message.sendMessage(senderPhone, getCommand() + ": alert started successfully");
+                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") alert started successfully");
                 return true;
             }
             else {
-                CmdManager.message.sendMessage(senderPhone, getCommand() + ": error, no alert currently in progress");
+                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") error, no alert currently in progress");
                 return true;
             }
         } else {
             if (arr[0].toLowerCase().equals("start")) {
-                CmdManager.message.sendMessage(senderPhone, getCommand() + ": alert already in progress, use the [stop] argument to stop it.");
+                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") alert already in progress, use the [stop] argument to stop it.");
                 return true;
             }
             else if (arr[0].toLowerCase().equals("stop")) {
@@ -72,7 +72,7 @@ public class ALERTcommand extends Command {
                         realm.copyToRealmOrUpdate(onGoingAlert);
                     }
                 });
-                CmdManager.message.sendMessage(senderPhone, getCommand() + ": alert stopped successfully");
+                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") alert stopped successfully");
                 return true;
             }
             else if (arr[0].toLowerCase().equals("list")) {
@@ -93,19 +93,19 @@ public class ALERTcommand extends Command {
                 }
 
                 if (nonResponses.size() == 0) {
-                    CmdManager.message.sendMessage(senderPhone, getCommand() + ": no users have responded");
+                    CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") no users have responded");
                     return true;
                 } else {
                     String output = "";
                     for (User user : nonResponses) {
                         output += "\n" + user.getName();
                     }
-                    CmdManager.message.sendMessage(senderPhone, getCommand() + ": users not responded:" + output);
+                    CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") users not responded:" + output);
                     return true;
                 }
             }
             else if (arr[0].toLowerCase().equals("status")) {
-                CmdManager.message.sendMessage(senderPhone, getCommand() + ": Running since " + onGoingAlert.getStartDate());
+                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") Running since " + onGoingAlert.getStartDate());
                 return true;
             }
         }

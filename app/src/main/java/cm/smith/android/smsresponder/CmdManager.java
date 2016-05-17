@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import cm.smith.android.smsresponder.command.Command;
 import cm.smith.android.smsresponder.message.Message;
+import cm.smith.android.smsresponder.model.Role;
 import cm.smith.android.smsresponder.model.User;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -91,10 +92,10 @@ public class CmdManager {
             return false;
         }
 
-        if (!bypassPermissions) {
+        if (!bypassPermissions && foundCmd.getPermissionLevel() != Role.GUEST) {
             // Make sure the sender is authorized to run this command
             User sender = database.where(User.class)
-                    .equalTo("userRole", foundCmd.getPermissionLevel())
+                    .equalTo("userRole", foundCmd.getPermissionLevel().getValue())
                     .equalTo("phone", inputPhone)
                     .findFirst();
 

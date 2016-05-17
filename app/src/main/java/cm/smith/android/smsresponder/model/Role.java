@@ -10,6 +10,7 @@ public enum Role {
         an string to get around that :(
      */
 
+    GUEST("GUEST"),
     MEMBER("MEMBER"),
     ADMIN("ADMIN");
 

@@ -27,7 +27,7 @@ public class SAFEcommand extends Command {
                 .findFirst();
 
         if (onGoingAlert == null) {
-            CmdManager.message.sendMessage(senderPhone, getCommand() + ": there is no alert currently in progress");
+            CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") there is no alert currently in progress");
             return true;
         } else {
             final User user = getDatabase().where(User.class)
@@ -35,7 +35,7 @@ public class SAFEcommand extends Command {
                     .findFirst();
 
             if (user == null) {
-                CmdManager.message.sendMessage(senderPhone, getCommand() + ": the phone can't call itself safe");
+                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") the phone can't call itself safe");
                 return false;
             }
 
@@ -47,7 +47,7 @@ public class SAFEcommand extends Command {
                 }
             }
             if (existingResponse != null) {
-                CmdManager.message.sendMessage(senderPhone, getCommand() + ": you have already responded to the current alert");
+                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") you have already responded to the current alert");
                 return true;
             }
 
@@ -66,7 +66,7 @@ public class SAFEcommand extends Command {
                 }
             });
 
-            CmdManager.message.sendMessage(senderPhone, getCommand() + ": response successfully saved");
+            CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") response successfully saved");
             return true;
         }
     }
