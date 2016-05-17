@@ -34,6 +34,12 @@ public class ADDcommand extends Command {
             return false;
         }
 
+        // Make sure that the username isn't too long
+        if (name.length() > 15) {
+            getMessage().sendMessage(senderPhone, "(" + getCommand() + ") Sorry, that name is too long :(");
+            return false;
+        }
+
         // Check if the input wants to set the role of the user
         if (arr.length == 3) {
             try {

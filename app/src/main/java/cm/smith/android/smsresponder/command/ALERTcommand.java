@@ -131,13 +131,11 @@ public class ALERTcommand extends Command {
     }
 
     private void setAlarm(Context context) {
-        long interval = 60000L; // 60 seconds
-
         Intent alarmIntent = new Intent(context, AlertReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
 
         manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, interval, pendingIntent);
+        manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
     }
 
     public void cancelAlarm(Context context) {
