@@ -15,8 +15,10 @@ import android.widget.Switch;
 import cm.smith.android.smsresponder.command.ADDcommand;
 import cm.smith.android.smsresponder.command.ALERTcommand;
 import cm.smith.android.smsresponder.command.DELETEcommand;
+import cm.smith.android.smsresponder.command.LISTcommand;
 import cm.smith.android.smsresponder.command.SAFEcommand;
 import cm.smith.android.smsresponder.command.TESTcommand;
+import cm.smith.android.smsresponder.message.Message;
 import cm.smith.android.smsresponder.message.ToastMessenger;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,14 +35,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Setup Command Manager and the output stream to use
-        manager = new CmdManager(new ToastMessenger(this), true);
+        Message message = new ToastMessenger(this);
+        manager = new CmdManager(message, true);
 
         // Register the commands we want to use
-        manager.registerCommand(new ADDcommand());
-        manager.registerCommand(new DELETEcommand());
-        manager.registerCommand(new ALERTcommand());
-        manager.registerCommand(new SAFEcommand());
-        manager.registerCommand(new TESTcommand());
+        manager.registerCommand(new ADDcommand(message));
+        manager.registerCommand(new DELETEcommand(message));
+        manager.registerCommand(new ALERTcommand(message));
+        manager.registerCommand(new SAFEcommand(message));
+        manager.registerCommand(new TESTcommand(message));
+        manager.registerCommand(new LISTcommand(message));
+
 
         // Testing Purposes
         input = (EditText)findViewById(R.id.editText);

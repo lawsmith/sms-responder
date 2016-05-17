@@ -1,6 +1,6 @@
 package cm.smith.android.smsresponder.command;
 
-import cm.smith.android.smsresponder.CmdManager;
+import cm.smith.android.smsresponder.message.Message;
 import cm.smith.android.smsresponder.model.Role;
 import cm.smith.android.smsresponder.model.User;
 import io.realm.Realm;
@@ -10,8 +10,8 @@ import io.realm.Realm;
  */
 public class DELETEcommand extends Command {
 
-    public DELETEcommand() {
-        super("DELETE", Role.ADMIN);
+    public DELETEcommand(Message message) {
+        super("DELETE", Role.ADMIN, message);
     }
 
     @Override
@@ -19,7 +19,7 @@ public class DELETEcommand extends Command {
         // Validate that the input has at least the right number of arguments
         String arr[] = arguments.split(" ");
         if (arguments.isEmpty() || arr.length != 1) {
-            CmdManager.message.sendMessage(senderPhone, "usage: " + getCommand() + " 1234567890");
+            getMessage().sendMessage(senderPhone, "usage: " + getCommand() + " 1234567890");
             return false;
         }
 
@@ -30,7 +30,7 @@ public class DELETEcommand extends Command {
 
         // If user doesn't exist display error
         if (user == null) {
-            CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") User: " + phoneNum + " not found.");
+            getMessage().sendMessage(senderPhone, "(" + getCommand() + ") User: " + phoneNum + " not found.");
             return false;
         }
 
@@ -41,7 +41,7 @@ public class DELETEcommand extends Command {
             }
         });
 
-        CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") " + phoneNum + " removed successfully");
+        getMessage().sendMessage(senderPhone, "(" + getCommand() + ") " + phoneNum + " removed successfully");
         return true;
     }
 

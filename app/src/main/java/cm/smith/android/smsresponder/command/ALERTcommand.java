@@ -8,7 +8,7 @@ import android.content.Intent;
 import java.util.ArrayList;
 import java.util.Date;
 
-import cm.smith.android.smsresponder.CmdManager;
+import cm.smith.android.smsresponder.message.Message;
 import cm.smith.android.smsresponder.model.Alert;
 import cm.smith.android.smsresponder.model.AlertResponse;
 import cm.smith.android.smsresponder.model.Role;
@@ -26,8 +26,8 @@ public class ALERTcommand extends Command {
     private PendingIntent pendingIntent;
     private AlarmManager manager;
 
-    public ALERTcommand() {
-        super("ALERT", Role.ADMIN);
+    public ALERTcommand(Message message) {
+        super("ALERT", Role.ADMIN, message);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ALERTcommand extends Command {
         // Validate that the input has at least the right number of arguments
         String arr[] = arguments.split(" ");
         if (arguments.isEmpty() || arr.length != 1) {
-            CmdManager.message.sendMessage(senderPhone, "usage: " + getCommand() + " start/stop");
+            getMessage().sendMessage(senderPhone, "usage: " + getCommand() + " start/stop");
             return false;
         }
 
@@ -62,18 +62,18 @@ public class ALERTcommand extends Command {
                 });
 
                 // send a sms message to everyone, every minute
-                setAlarm(CmdManager.message.getContext());
+                setAlarm(getMessage().getContext());
 
-                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") alert started successfully");
+                getMessage().sendMessage(senderPhone, "(" + getCommand() + ") alert started successfully");
                 return true;
             }
             else {
-                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") error, no alert currently in progress");
+                getMessage().sendMessage(senderPhone, "(" + getCommand() + ") error, no alert currently in progress");
                 return true;
             }
         } else {
             if (arr[0].toLowerCase().equals("start")) {
-                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") alert already in progress, use the [stop] argument to stop it.");
+                getMessage().sendMessage(senderPhone, "(" + getCommand() + ") alert already in progress, use the [stop] argument to stop it.");
                 return true;
             }
             else if (arr[0].toLowerCase().equals("stop")) {
@@ -86,9 +86,9 @@ public class ALERTcommand extends Command {
                 });
 
                 // stop sending sms messages to everyone
-                cancelAlarm(CmdManager.message.getContext());
+                cancelAlarm(getMessage().getContext());
 
-                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") alert stopped successfully");
+                getMessage().sendMessage(senderPhone, "(" + getCommand() + ") alert stopped successfully");
                 return true;
             }
             else if (arr[0].toLowerCase().equals("list")) {
@@ -109,29 +109,29 @@ public class ALERTcommand extends Command {
                 }
 
                 if (nonResponses.size() == 0) {
-                    CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") no users have responded");
+                    getMessage().sendMessage(senderPhone, "(" + getCommand() + ") no users have responded");
                     return true;
                 } else {
                     String output = "";
                     for (User user : nonResponses) {
                         output += "\n" + user.getName();
                     }
-                    CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") users not responded:" + output);
+                    getMessage().sendMessage(senderPhone, "(" + getCommand() + ") users not responded:" + output);
                     return true;
                 }
             }
             else if (arr[0].toLowerCase().equals("status")) {
-                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") Running since " + onGoingAlert.getStartDate());
+                getMessage().sendMessage(senderPhone, "(" + getCommand() + ") Running since " + onGoingAlert.getStartDate());
                 return true;
             }
         }
 
-        CmdManager.message.sendMessage(senderPhone, "usage: " + getCommand() + " start/stop/status");
+        getMessage().sendMessage(senderPhone, "usage: " + getCommand() + " start/stop/status");
         return false;
     }
 
     private void setAlarm(Context context) {
-        long interval = 30000L; // 30 seconds
+        long interval = 60000L; // 60 seconds
 
         Intent alarmIntent = new Intent(context, AlertReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);

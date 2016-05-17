@@ -26,16 +26,16 @@ public class CmdManager {
     public static final String KEY_PREF_RUNNING = "pref_running_key";
     public static final Integer KEY_NOTIFICATION = 343434;
 
-    public static Message message;
+    public Message message;
     ArrayList<Command> allCommands;
     private Realm database;
     private Boolean bypassPermissions;
 
     public CmdManager(Message msg, Boolean bypassPermissions) {
-        CmdManager.message = msg;
+        message = msg;
         allCommands = new ArrayList<>();
 
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(CmdManager.message.getContext()).build();
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(message.getContext()).build();
         database = Realm.getInstance(realmConfig);
 
         this.bypassPermissions = bypassPermissions;
@@ -59,17 +59,9 @@ public class CmdManager {
      * @return true is the command was successfully executed
      */
     public boolean checkCommand(String inputPhone, String inputCommand) {
-        if (!bypassPermissions) {
-            // Check to if a registered user exists
-            if (!validUserByPhoneNum(inputPhone)) {
-                // TODO: Log an invalid attempt
-                return false;
-            }
-        }
-
         // ERROR: no commands registered
         if (allCommands.size() == 0) {
-            CmdManager.message.sendMessage(inputPhone, R.string.error_configuration);
+            message.sendMessage(inputPhone, R.string.error_configuration);
             return false;
         }
 
@@ -88,19 +80,29 @@ public class CmdManager {
         // We're clear to start checking input command against registered ones
         Command foundCmd = findCommand(commandString);
         if (foundCmd == null) {
-            CmdManager.message.sendMessage(inputPhone, R.string.error_command_invalid);
+            message.sendMessage(inputPhone, R.string.error_command_invalid);
             return false;
         }
 
         if (!bypassPermissions && foundCmd.getPermissionLevel() != Role.GUEST) {
+            // Check to if a registered user exists
+            if (!validUserByPhoneNum(inputPhone)) {
+                // TODO: Log an invalid attempt
+                return false;
+            }
+
             // Make sure the sender is authorized to run this command
             User sender = database.where(User.class)
-                    .equalTo("userRole", foundCmd.getPermissionLevel().getValue())
+                    .beginGroup()
+                        .equalTo("userRole", foundCmd.getPermissionLevel().getValue())
+                        .or()
+                        .equalTo("userRole", Role.ADMIN.getValue())
+                    .endGroup()
                     .equalTo("phone", inputPhone)
                     .findFirst();
 
             if (sender == null) {
-                CmdManager.message.sendMessage(inputPhone, "Sorry, you don't have sufficient permissions.");
+                message.sendMessage(inputPhone, "Sorry, you don't have sufficient permissions.");
                 return false;
             }
         }

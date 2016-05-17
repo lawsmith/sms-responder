@@ -1,6 +1,6 @@
 package cm.smith.android.smsresponder.command;
 
-import cm.smith.android.smsresponder.CmdManager;
+import cm.smith.android.smsresponder.message.Message;
 import cm.smith.android.smsresponder.model.Role;
 
 /**
@@ -8,13 +8,13 @@ import cm.smith.android.smsresponder.model.Role;
  */
 public class TESTcommand extends Command {
 
-    public TESTcommand() {
-        super("TEST", Role.GUEST);
+    public TESTcommand(Message message) {
+        super("TEST", Role.GUEST, message);
     }
 
     @Override
     public boolean execute(final String senderPhone, final String arguments) {
-        CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") " + senderPhone);
+        getMessage().sendMessage(senderPhone, "(" + getCommand() + ") " + senderPhone);
         return true;
     }
 

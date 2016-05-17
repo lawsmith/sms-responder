@@ -12,8 +12,10 @@ import cm.smith.android.smsresponder.CmdManager;
 import cm.smith.android.smsresponder.command.ADDcommand;
 import cm.smith.android.smsresponder.command.ALERTcommand;
 import cm.smith.android.smsresponder.command.DELETEcommand;
+import cm.smith.android.smsresponder.command.LISTcommand;
 import cm.smith.android.smsresponder.command.SAFEcommand;
 import cm.smith.android.smsresponder.command.TESTcommand;
+import cm.smith.android.smsresponder.message.Message;
 import cm.smith.android.smsresponder.message.SMSMessenger;
 
 /**
@@ -60,14 +62,16 @@ public class SmsReceiver extends BroadcastReceiver {
                 }
 
                 // Setup Command Manager and the output stream to use
-                CmdManager manager = new CmdManager(new SMSMessenger(context), false);
+                Message message = new SMSMessenger(context);
+                CmdManager manager = new CmdManager(message, false);
 
                 // Register the commands we want to use
-                manager.registerCommand(new ADDcommand());
-                manager.registerCommand(new DELETEcommand());
-                manager.registerCommand(new ALERTcommand());
-                manager.registerCommand(new SAFEcommand());
-                manager.registerCommand(new TESTcommand());
+                manager.registerCommand(new ADDcommand(message));
+                manager.registerCommand(new DELETEcommand(message));
+                manager.registerCommand(new ALERTcommand(message));
+                manager.registerCommand(new SAFEcommand(message));
+                manager.registerCommand(new TESTcommand(message));
+                manager.registerCommand(new LISTcommand(message));
 
                 manager.checkCommand(msg_from, msg_body);
             }

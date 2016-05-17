@@ -1,6 +1,6 @@
 package cm.smith.android.smsresponder.command;
 
-import cm.smith.android.smsresponder.CmdManager;
+import cm.smith.android.smsresponder.message.Message;
 import cm.smith.android.smsresponder.model.Role;
 import cm.smith.android.smsresponder.model.User;
 import io.realm.Realm;
@@ -11,8 +11,8 @@ import io.realm.RealmResults;
  */
 public class ADDcommand extends Command {
 
-    public ADDcommand() {
-        super("ADD", Role.ADMIN);
+    public ADDcommand(Message message) {
+        super("ADD", Role.ADMIN, message);
     }
 
     @Override
@@ -20,7 +20,7 @@ public class ADDcommand extends Command {
         // Validate that the input has at least the right number of arguments
         String arr[] = arguments.split(" ");
         if (arguments.isEmpty() || (arr.length != 2 && arr.length != 3)) {
-            CmdManager.message.sendMessage(senderPhone, "usage: " + getCommand() + " 1234567890 name [role]");
+            getMessage().sendMessage(senderPhone, "usage: " + getCommand() + " 1234567890 name [role]");
             return false;
         }
 
@@ -30,7 +30,7 @@ public class ADDcommand extends Command {
 
         // Make sure that the phone number isn't already in use
         if (User.checkIfExists(getDatabase(), phoneNum)) {
-            CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") '" + phoneNum + "' is already in use");
+            getMessage().sendMessage(senderPhone, "(" + getCommand() + ") '" + phoneNum + "' is already in use");
             return false;
         }
 
@@ -58,7 +58,7 @@ public class ADDcommand extends Command {
             }
         });
 
-        CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") " + name + " added successfully as a " + tempUser.getUserRole());
+        getMessage().sendMessage(senderPhone, "(" + getCommand() + ") " + name + " added successfully as a " + tempUser.getUserRole());
         return true;
     }
 

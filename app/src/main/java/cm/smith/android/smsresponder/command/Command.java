@@ -1,6 +1,6 @@
 package cm.smith.android.smsresponder.command;
 
-import cm.smith.android.smsresponder.CmdManager;
+import cm.smith.android.smsresponder.message.Message;
 import cm.smith.android.smsresponder.model.Role;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -12,16 +12,18 @@ public abstract class Command implements ICommand {
 
     public static String DEBUG_KEY = "COMMAND";
 
+    private Message message;
     private String command;
     private Role permissionLevel;
 
     private Realm database;
 
-    public Command(String command, Role permissionLevel) {
+    public Command(String command, Role permissionLevel, Message message) {
         this.command = command;
         this.permissionLevel = permissionLevel;
+        setMessage(message);
 
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(CmdManager.message.getContext()).build();
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(getMessage().getContext()).build();
         database = Realm.getInstance(realmConfig);
     }
 
@@ -47,6 +49,22 @@ public abstract class Command implements ICommand {
      */
     public Realm getDatabase() {
         return this.database;
+    }
+
+    /**
+     * Sets the message handler to be used
+     * @param message message handler to be used
+     */
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
+    /**
+     * Returns the message handler to send text to
+     * @return the message handler to send text to
+     */
+    public Message getMessage() {
+        return this.message;
     }
 
 }

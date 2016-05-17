@@ -2,7 +2,7 @@ package cm.smith.android.smsresponder.command;
 
 import java.util.Date;
 
-import cm.smith.android.smsresponder.CmdManager;
+import cm.smith.android.smsresponder.message.Message;
 import cm.smith.android.smsresponder.model.Alert;
 import cm.smith.android.smsresponder.model.AlertResponse;
 import cm.smith.android.smsresponder.model.Role;
@@ -15,8 +15,8 @@ import io.realm.RealmResults;
  */
 public class SAFEcommand extends Command {
 
-    public SAFEcommand() {
-        super("SAFE", Role.MEMBER);
+    public SAFEcommand(Message message) {
+        super("SAFE", Role.MEMBER, message);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class SAFEcommand extends Command {
                 .findFirst();
 
         if (onGoingAlert == null) {
-            CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") there is no alert currently in progress");
+            getMessage().sendMessage(senderPhone, "(" + getCommand() + ") there is no alert currently in progress");
             return true;
         } else {
             final User user = getDatabase().where(User.class)
@@ -35,7 +35,7 @@ public class SAFEcommand extends Command {
                     .findFirst();
 
             if (user == null) {
-                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") the phone can't call itself safe");
+                getMessage().sendMessage(senderPhone, "(" + getCommand() + ") the phone can't call itself safe");
                 return false;
             }
 
@@ -47,7 +47,7 @@ public class SAFEcommand extends Command {
                 }
             }
             if (existingResponse != null) {
-                CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") you have already responded to the current alert");
+                getMessage().sendMessage(senderPhone, "(" + getCommand() + ") you have already responded to the current alert");
                 return true;
             }
 
@@ -66,7 +66,7 @@ public class SAFEcommand extends Command {
                 }
             });
 
-            CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") response successfully saved");
+            getMessage().sendMessage(senderPhone, "(" + getCommand() + ") response successfully saved");
             return true;
         }
     }
