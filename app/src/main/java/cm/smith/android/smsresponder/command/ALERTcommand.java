@@ -1,5 +1,10 @@
 package cm.smith.android.smsresponder.command;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -8,6 +13,7 @@ import cm.smith.android.smsresponder.model.Alert;
 import cm.smith.android.smsresponder.model.AlertResponse;
 import cm.smith.android.smsresponder.model.Role;
 import cm.smith.android.smsresponder.model.User;
+import cm.smith.android.smsresponder.receiver.AlertReceiver;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
@@ -16,6 +22,9 @@ import io.realm.RealmResults;
  * Created by anthony on 2016-05-11.
  */
 public class ALERTcommand extends Command {
+
+    private PendingIntent pendingIntent;
+    private AlarmManager manager;
 
     public ALERTcommand() {
         super("ALERT", Role.ADMIN);
@@ -52,6 +61,9 @@ public class ALERTcommand extends Command {
                     }
                 });
 
+                // send a sms message to everyone, every minute
+                setAlarm(CmdManager.message.getContext());
+
                 CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") alert started successfully");
                 return true;
             }
@@ -72,6 +84,10 @@ public class ALERTcommand extends Command {
                         realm.copyToRealmOrUpdate(onGoingAlert);
                     }
                 });
+
+                // stop sending sms messages to everyone
+                cancelAlarm(CmdManager.message.getContext());
+
                 CmdManager.message.sendMessage(senderPhone, "(" + getCommand() + ") alert stopped successfully");
                 return true;
             }
@@ -112,6 +128,24 @@ public class ALERTcommand extends Command {
 
         CmdManager.message.sendMessage(senderPhone, "usage: " + getCommand() + " start/stop/status");
         return false;
+    }
+
+    private void setAlarm(Context context) {
+        long interval = 30000L; // 30 seconds
+
+        Intent alarmIntent = new Intent(context, AlertReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+
+        manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, interval, pendingIntent);
+    }
+
+    public void cancelAlarm(Context context) {
+        Intent alarmIntent = new Intent(context, AlertReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+
+        manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        manager.cancel(pendingIntent);
     }
 
 }

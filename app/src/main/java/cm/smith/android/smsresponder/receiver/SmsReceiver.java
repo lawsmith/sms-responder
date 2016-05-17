@@ -1,4 +1,4 @@
-package cm.smith.android.smsresponder;
+package cm.smith.android.smsresponder.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
+import cm.smith.android.smsresponder.CmdManager;
 import cm.smith.android.smsresponder.command.ADDcommand;
 import cm.smith.android.smsresponder.command.ALERTcommand;
 import cm.smith.android.smsresponder.command.DELETEcommand;
@@ -16,13 +17,16 @@ import cm.smith.android.smsresponder.command.TESTcommand;
 import cm.smith.android.smsresponder.message.SMSMessenger;
 
 /**
+ * This class is used to intercept inbound SMS messages and check if they are potential commands.
+ * It only intercepts messages if the user has turned the SMS Listener setting on within the app.
+ *
  * Created by anthony on 2016-04-09.
  */
-public class SmsListener extends BroadcastReceiver {
+public class SmsReceiver extends BroadcastReceiver {
 
     private SharedPreferences preferences;
 
-    public SmsListener() {
+    public SmsReceiver() {
         super();
     }
 

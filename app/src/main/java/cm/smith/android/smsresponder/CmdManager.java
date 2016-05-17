@@ -141,7 +141,7 @@ public class CmdManager {
     }
 
     /**
-     * Shows a persistent notification to notify the user that the background SmsListener is running
+     * Shows a persistent notification to notify the user that the background SMS Receiver is running
      * @param context
      */
     public static void makeNotification(Context context) {
@@ -174,7 +174,7 @@ public class CmdManager {
     }
 
     /**
-     * Cancels the persistent notification, used when the SmsListener is turned off
+     * Cancels the persistent notification, used when the SMS Receiver is turned off
      * @param context
      */
     public static void cancelNotification(Context context) {
